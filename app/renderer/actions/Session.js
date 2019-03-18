@@ -51,6 +51,8 @@ export const SHOW_DESIRED_CAPS_JSON_ERROR = 'SHOW_DESIRED_CAPS_JSON_ERROR';
 
 export const IS_ADDING_CLOUD_PROVIDER = 'IS_ADDING_CLOUD_PROVIDER';
 
+export const SET_PROVIDERS = 'SET_PROVIDERS';
+
 const serverTypes = {};
 for (const key of _.keys(CloudProviders)) {
   serverTypes[key] = key;
@@ -626,5 +628,21 @@ export function addCloudProvider () {
 export function stopAddCloudProvider () {
   return (dispatch) => {
     dispatch({type: IS_ADDING_CLOUD_PROVIDER, isAddingProvider: false});
+  };
+}
+
+export function addProvider (provider) {
+  return (dispatch, getState) => {
+    let currentProviders = getState().session.visibleProviders;
+    // TODO: Update this in settings
+    dispatch({type: SET_PROVIDERS, providers: _.union(currentProviders, [provider])});
+  };
+}
+
+export function removeVisibleProvider (provider) {
+  return (dispatch, getState) => {
+    let currentProviders = getState().session.visibleProviders;
+    // TODO: Update this in settings
+    dispatch({type: SET_PROVIDERS, providers: _.without(currentProviders, provider)});
   };
 }
